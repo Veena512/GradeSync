@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Exam</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        .question { font-size: 20px; margin-bottom: 10px; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin: 5px 0; }
+        button { margin-top: 10px; padding: 10px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>MCQ Exam</h2>
+        <div id="exam">
+            <div id="question-container">
+                <p id="question" class="question"></p>
+                <ul id="options" class="options"></ul>
+            </div>
+            <button onclick="nextQuestion()">Next</button>
+        </div>
+        <div id="result" style="display: none;">
+            <h3>Exam Completed!</h3>
+            <p>Your score: <span id="score"></span>/3</p>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What is 2 + 2?", options: ["3", "4", "5", "6"], answer: 1 },
+            { question: "What is the capital of France?", options: ["Berlin", "Madrid", "Paris", "Rome"], answer: 2 },
+            { question: "Which is the largest planet?", options: ["Earth", "Mars", "Jupiter", "Venus"], answer: 2 }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById("question").innerText = q.question;
+            const options = document.getElementById("options");
+            options.innerHTML = "";
+            q.options.forEach((opt, index) => {
+                options.innerHTML += `<li><input type="radio" name="option" value="${index}"> ${opt}</li>`;
+            });
+        }
+
+        function nextQuestion() {
+            const selected = document.querySelector("input[name='option']:checked");
+            if (!selected) return alert("Please select an option!");
+
+            if (parseInt(selected.value) === questions[currentQuestion].answer) {
+                score++;
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("exam").style.display = "none";
+                document.getElementById("result").style.display = "block";
+                document.getElementById("score").innerText = score;
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
